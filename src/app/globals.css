@@ -1,26 +1,297 @@
+/* src/app/globals.css */
 @import "tailwindcss";
 
+/* =========================
+   Paleta (modo claro)
+   ========================= */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  --radius: 12px;
+
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+
+  --destructive: oklch(0.577 0.245 27.325);
+
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
 }
 
-@theme inline {
+/* =========================
+   Paleta (modo escuro)
+   ========================= */
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+
+  --destructive: oklch(0.704 0.191 22.216);
+
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+}
+
+/* =========================
+   Registra tokens Tailwind v4
+   (habilita bg-background, text-foreground, border-border, etc.)
+   ========================= */
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius: var(--radius);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* =========================
+   Base / resets
+   ========================= */
+html, body { height: 100%; }
 
 body {
+  /* As cores já vêm do layout.tsx com bg-background text-foreground.
+     Se preferir aplicar aqui, poderia usar:
+     background: var(--background);
+     color: var(--foreground);
+  */
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "rlig" 1, "calt" 1;
+  transition: background .2s ease, color .2s ease;
+}
+
+/* Helpers de impressão */
+@media print {
+  .no-print { display: none !important; }
+}
+
+/* =========================
+   Utilitários simples (opcional)
+   ========================= */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.card {
+  border: 1px solid hsl(0 0% 90%);
+  border-radius: var(--radius);
+  background: var(--background);
+  box-shadow: 0 1px 0 hsl(0 0% 90% / 0.5) inset;
+}
+
+.badge {
+  font-size: .75rem;
+  border: 1px solid hsl(0 0% 86%);
+  padding: .2rem .5rem;
+  border-radius: 999px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  border: 1px solid hsl(0 0% 86%);
+  padding: .55rem .85rem;
+  border-radius: 10px;
+  background: var(--background);
+  transition: .15s ease;
+  text-decoration: none;
+}
+.btn:hover { background: color-mix(in oklab, var(--background), #000 4%); }
+.btn.primary { background: #111; color: #fff; border-color: #111; }
+.btn.primary:hover { filter: brightness(.95); }
+
+.iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid hsl(0 0% 86%);
+}
+.iconbtn:hover { background: color-mix(in oklab, var(--background), #000 4%); }
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .925rem;
+}
+.table thead th {
+  position: sticky; top: 0;
+  background: color-mix(in oklab, var(--background), #000 6%);
+  text-align: left; padding: .75rem;
+  border-bottom: 1px solid hsl(0 0% 86%);
+}
+.table tbody td {
+  padding: .65rem .75rem;
+  border-bottom: 1px solid hsl(0 0% 92%);
+}
+.table tbody tr:hover {
+  background: color-mix(in oklab, var(--background), #000 3%);
+}
+
+.empty {
+  padding: 2rem; text-align: center;
+  color: color-mix(in oklab, var(--foreground), #000 40%);
+}
+/* ==== Ações da tabela (modo claro + dark) ==== */
+.table-action {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .45rem .8rem;
+  border-radius: 10px;
+  border: 1px solid hsl(0 0% 86%);
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-size: .875rem;
+  text-decoration: none;
+  transition: background .15s ease, color .15s ease, border-color .15s ease, box-shadow .15s ease;
 }
+
+.table-action:hover {
+  background: color-mix(in oklab, var(--background), #000 4%);
+}
+
+.table-action:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--background), #4c9aff 40%);
+}
+
+/* Botão destrutivo (Excluir) */
+.table-action--danger {
+  border-color: oklch(0.65 0.21 27);
+  color: oklch(0.48 0.21 27);
+}
+
+.table-action--danger:hover {
+  background: oklch(0.72 0.16 27); /* vermelho claro */
+  color: oklch(0.20 0.04 20);       /* texto escuro para ótimo contraste */
+}
+
+/* ===== DARK MODE ===== */
+.dark .table-action {
+  /* aumenta contraste no dark */
+  border-color: oklch(0.42 0 0);                    /* cinza médio */
+  background: color-mix(in oklab, var(--background), #fff 3%);
+  color: oklch(0.96 0 0);                           /* quase branco */
+}
+
+.dark .table-action:hover,
+.dark .table-action:active {
+  background: color-mix(in oklab, var(--background), #fff 10%);
+  color: oklch(0.99 0 0);                           /* branco */
+  border-color: oklch(0.55 0 0);
+}
+
+.dark .table-action:focus-visible {
+  box-shadow: 0 0 0 2px oklch(0.72 0.12 240 / .5);  /* anel azulado sutil */
+}
+
+/* Danger no dark: fundo vermelho vivo e texto branco */
+.dark .table-action--danger {
+  border-color: oklch(0.62 0.22 27);
+  color: oklch(0.97 0 0);
+}
+
+.dark .table-action--danger:hover,
+.dark .table-action--danger:active {
+  background: oklch(0.58 0.23 27);
+  border-color: oklch(0.74 0.12 27);
+  color: oklch(0.99 0 0); /* branco */
+}
+/* === Força fundo claro + texto preto no DARK === */
+.dark .table-action {
+  background: oklch(0.97 0 0);            /* claro */
+  color: oklch(0.20 0 0);                  /* preto/quase preto */
+  border-color: oklch(0.86 0 0);
+}
+
+.dark .table-action:hover,
+.dark .table-action:active {
+  background: oklch(0.94 0 0);            /* um tiquinho mais escuro no hover */
+  color: oklch(0.18 0 0);
+  border-color: oklch(0.80 0 0);
+}
+
+/* Variante destrutiva no dark: claro com leve tom vermelho, texto preto */
+.dark .table-action--danger {
+  background: oklch(0.96 0.05 27);        /* vermelho bem clarinho */
+  color: oklch(0.20 0 0);                  /* preto */
+  border-color: oklch(0.86 0.06 27);
+}
+
+.dark .table-action--danger:hover,
+.dark .table-action--danger:active {
+  background: oklch(0.92 0.06 27);
+  color: oklch(0.18 0 0);
+  border-color: oklch(0.80 0.07 27);
+}
+
