@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 {
   "version": 2
 }
+=======
+{ "version": 2 }
+>>>>>>> 6b03524 (chore: trigger Vercel deploy)
