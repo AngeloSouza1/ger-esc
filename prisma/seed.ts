@@ -4,7 +4,8 @@ import crypto from "node:crypto";
 const prisma = new PrismaClient();
 
 const rand = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
-const pick = <T,>(arr: T[]) => arr[rand(0, arr.length - 1)];
+// garante retorno não-undefined mesmo com noUncheckedIndexedAccess
+const pick = <T,>(arr: readonly T[]): T => arr[rand(0, arr.length - 1)]!;
 const today0 = () => { const d = new Date(); d.setHours(0,0,0,0); return d; };
 const addDays = (d: Date, n: number) => new Date(d.getTime() + n * 86400000);
 const uuid = () => crypto.randomUUID();
@@ -71,12 +72,12 @@ async function main() {
   await prisma.schoolYear.createMany({ data: schoolYears, skipDuplicates: true });
 
   // classes (20)
-  const turnos = ["Manhã", "Tarde"];
+  const turnos = ["Manhã", "Tarde"] as const;
   const classes = Array.from({ length: 20 }, (_, i) => ({
     id: uuid(),
     turma: `Turma ${String.fromCharCode(65 + (i % 26))}`,
-    turno: turnos[(i + 1) % 2],
-    schoolYearId: schoolYears[i % schoolYears.length].id,
+    turno: turnos[(i + 1) % turnos.length]!,
+    schoolYearId: schoolYears[i % schoolYears.length]!.id,
   }));
   await prisma.class.createMany({ data: classes, skipDuplicates: true });
 
@@ -93,10 +94,10 @@ async function main() {
   const enrollments = students.map((s, idx) => ({
     id: uuid(),
     studentId: s.id,
-    classId: classes[idx % classes.length].id,
+    classId: classes[idx % classes.length]!.id,
     frequenciaFinal: null,
     resultadoFinal: null,
-    cargaHorariaTotal: pick([800, 900, 1000, 1200]),
+    cargaHorariaTotal: pick([800, 900, 1000, 1200] as const),
     createdAt: new Date(),
     updatedAt: new Date(),
   }));

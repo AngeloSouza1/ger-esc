@@ -21,7 +21,7 @@ services:
 
   web:
     build:
-      context: .                  # esta é a pasta app/
+      context: .                  # raiz do projeto
       dockerfile: Dockerfile
     container_name: gescolar_web
     depends_on:

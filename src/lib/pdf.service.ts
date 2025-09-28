@@ -7,12 +7,20 @@ type PdfOptions = {
 };
 
 export async function generatePdfFromHtml({ html }: PdfOptions): Promise<Buffer> {
-  const browser = await puppeteer.launch({
-    // usa o Chromium instalado no container (definido no Dockerfile)
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium",
+  // Em produção (Docker) usamos o Chromium do sistema (env setado no Dockerfile).
+  // Em desenvolvimento local, deixe o Puppeteer usar o binário baixado automaticamente
+  // (não force executablePath se a env não estiver definida).
+  const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+  const launchOpts: Parameters<typeof puppeteer.launch>[0] = {
     headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
+  };
+  if (executablePath) {
+    // no container Debian/Alpine normalmente: /usr/bin/chromium
+    (launchOpts as any).executablePath = executablePath;
+  }
+
+  const browser = await puppeteer.launch(launchOpts);
 
   try {
     const page = await browser.newPage();

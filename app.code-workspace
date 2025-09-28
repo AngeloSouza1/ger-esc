@@ -1,8 +1,8 @@
 {
-	"folders": [
-		{
-			"path": "app"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {}
 }

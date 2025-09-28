@@ -1,4 +1,4 @@
-# app/Dockerfile
+# Dockerfile
 FROM node:20-bookworm-slim
 
 # 1) Dependências do Chromium (para Puppeteer gerar PDF)
