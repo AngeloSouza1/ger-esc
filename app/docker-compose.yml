@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:15
+    container_name: gescolar_db
+    environment:
+      POSTGRES_USER: school
+      POSTGRES_PASSWORD: school
+      POSTGRES_DB: gescolar
+    ports:
+      - "5433:5432"               # host:5433 -> container:5432
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    container_name: gescolar_adminer
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+
+  web:
+    build:
+      context: .                  # esta é a pasta app/
+      dockerfile: Dockerfile
+    container_name: gescolar_web
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: development
+      # Ajuste conforme seu ORM/lib (ex.: Prisma)
+      DATABASE_URL: postgres://school:school@db:5432/gescolar
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app                    # hot reload
+      - /app/node_modules         # impede sobreposição do host
+    command: npm run dev -- -H 0.0.0.0 -p 3000
+
+volumes:
+  dbdata:

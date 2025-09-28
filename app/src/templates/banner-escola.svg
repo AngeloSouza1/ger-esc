@@ -1,0 +1,27 @@
+<svg width="2400" height="420" viewBox="0 0 2400 420" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fundo -->
+  <rect x="0" y="0" width="2400" height="420" fill="#0F172A"></rect>
+  
+  <!-- Faixa decorativa inferior -->
+  <rect x="0" y="360" width="2400" height="60" fill="#1E293B"></rect>
+  <rect x="0" y="360" width="520" height="60" fill="#38BDF8"></rect>
+
+  <!-- Logomarca (escudo simples) -->
+  <g transform="translate(120,90)">
+    <path d="M0,40 L90,0 L180,40 L180,160 C180,190 150,230 90,260 C30,230 0,190 0,160 Z" fill="#38BDF8"></path>
+    <path d="M30,70 L90,45 L150,70 L150,150 C150,170 130,195 90,215 C50,195 30,170 30,150 Z" fill="#0EA5E9"></path>
+    <circle cx="90" cy="118" r="26" fill="#0F172A"></circle>
+  </g>
+
+  <!-- Títulos -->
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial" fill="#FFFFFF">
+    <text x="360" y="150" font-size="60" font-weight="600" opacity="0.9">SECRETARIA MUNICIPAL DE EDUCAÇÃO</text>
+    <text x="360" y="220" font-size="92" font-weight="800" letter-spacing="1">GESTÃO ESCOLAR</text>
+    <text x="360" y="280" font-size="44" opacity="0.9">Histórico Escolar • Certidões • Emissão e Verificação Online</text>
+  </g>
+
+  <!-- QR / URL (opcional, apenas decorativo no banner) -->
+  <g font-family="Inter, system-ui, -apple-system" fill="#93C5FD" opacity="0.9">
+    <text x="360" y="330" font-size="38">verificação: suaescola.gov.br/verify</text>
+  </g>
+</svg>
