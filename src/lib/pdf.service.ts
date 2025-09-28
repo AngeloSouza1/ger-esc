@@ -7,20 +7,30 @@ type PdfOptions = {
 };
 
 export async function generatePdfFromHtml({ html }: PdfOptions): Promise<Buffer> {
-  // Em produção (Docker) usamos o Chromium do sistema (env setado no Dockerfile).
-  // Em desenvolvimento local, deixe o Puppeteer usar o binário baixado automaticamente
-  // (não force executablePath se a env não estiver definida).
-  const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
-  const launchOpts: Parameters<typeof puppeteer.launch>[0] = {
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  };
-  if (executablePath) {
-    // no container Debian/Alpine normalmente: /usr/bin/chromium
-    (launchOpts as any).executablePath = executablePath;
-  }
+  // Vercel (produção): usar @sparticuz/chromium + puppeteer-core.
+  // Local/Docker: usar puppeteer completo (com binário baixado ou PUPPETEER_EXECUTABLE_PATH).
+  let browser: import("puppeteer").Browser;
 
-  const browser = await puppeteer.launch(launchOpts);
+  if (process.env.VERCEL) {
+    const chromium = await import("@sparticuz/chromium");
+    const pptr = await import("puppeteer-core");
+
+    const executablePath = await chromium.executablePath();
+    browser = await pptr.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: executablePath || undefined,
+      headless: chromium.headless,
+    } as any);
+  } else {
+    const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+    const launchOpts: Parameters<typeof puppeteer.launch>[0] = {
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    };
+    if (executablePath) (launchOpts as any).executablePath = executablePath;
+    browser = await puppeteer.launch(launchOpts);
+  }
 
   try {
     const page = await browser.newPage();
