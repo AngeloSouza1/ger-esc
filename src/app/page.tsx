@@ -8,7 +8,6 @@ export default function Home() {
         </p>
         <div className="mt-4 flex gap-2">
           <a href="/students" className="rounded-lg border px-4 py-2 text-sm hover:bg-gray-50">Listar alunos</a>
-          <a href="/api/dev/seed" className="rounded-lg border px-4 py-2 text-sm hover:bg-gray-50" title="POST /api/dev/seed">Criar dados de teste</a>
         </div>
       </div>
     </section>
